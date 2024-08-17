@@ -1,4 +1,4 @@
-const apiKey = 'e5451d71c5871acee3bfb65929f1280f';
+const apiKey = '9ed74dd87c07265679f23bba0a572c8a';
 const searchBtn = document.getElementById('search-btn');
 const cityInput = document.getElementById('city-input');
 const weatherInfo = document.getElementById('weather-info');
@@ -13,11 +13,17 @@ searchBtn.addEventListener('click', () => {
 async function fetchWeather(city) {
     try {
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+        console.log('Response status:', response.status);
         const data = await response.json();
-        displayWeather(data);
+        console.log('API response:', data);
+        if (response.ok) {
+            displayWeather(data);
+        } else {
+            throw new Error(data.message || 'Failed to fetch weather data');
+        }
     } catch (error) {
         console.error('Error:', error);
-        weatherInfo.innerHTML = 'An error occurred. Please try again.';
+        weatherInfo.innerHTML = `An error occurred: ${error.message}`;
     }
 }
 
